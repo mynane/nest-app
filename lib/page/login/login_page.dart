@@ -6,6 +6,7 @@ import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
+import 'package:gsy_github_app_flutter/config/application.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/redux/login_redux.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -102,19 +103,19 @@ class _LoginPageState extends State<LoginPage> with LoginBLoC {
                                     onPress: loginIn,
                                   ),
                                 ),
-                                new SizedBox(
-                                  width: 10,
-                                ),
-                                new Expanded(
-                                  child: new GSYFlexButton(
-                                    text: GSYLocalizations.i18n(context)!
-                                        .oauth_text,
-                                    color: Theme.of(context).primaryColor,
-                                    textColor: GSYColors.textWhite,
-                                    fontSize: 16,
-                                    onPress: oauthLogin,
-                                  ),
-                                ),
+                                // new SizedBox(
+                                //   width: 10,
+                                // ),
+                                // new Expanded(
+                                //   child: new GSYFlexButton(
+                                //     text: GSYLocalizations.i18n(context)!
+                                //         .oauth_text,
+                                //     color: Theme.of(context).primaryColor,
+                                //     textColor: GSYColors.textWhite,
+                                //     fontSize: 16,
+                                //     onPress: oauthLogin,
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),
@@ -181,21 +182,21 @@ mixin LoginBLoC on State<LoginPage> {
   }
 
   loginIn() async {
-    Fluttertoast.showToast(
-        msg: GSYLocalizations.i18n(context)!.Login_deprecated,
-        gravity: ToastGravity.CENTER,
-        toastLength: Toast.LENGTH_LONG);
-    return;
-    // if (_userName == null || _userName.isEmpty) {
-    //   return;
-    // }
-    // if (_password == null || _password.isEmpty) {
-    //   return;
-    // }
-    //
-    // ///通过 redux 去执行登陆流程
-    // StoreProvider.of<GSYState>(context)
-    //     .dispatch(LoginAction(context, _userName, _password));
+    // Fluttertoast.showToast(
+    //     msg: GSYLocalizations.i18n(context)!.Login_deprecated,
+    //     gravity: ToastGravity.CENTER,
+    //     toastLength: Toast.LENGTH_LONG);
+    // return;
+    if (_userName == null || _userName!.isEmpty) {
+      return;
+    }
+    if (_password == null || _password!.isEmpty) {
+      return;
+    }
+
+    ///通过 redux 去执行登陆流程
+    StoreProvider.of<GSYState>(context)
+        .dispatch(LoginAction(context, _userName, _password));
   }
 
   oauthLogin() async {

@@ -77,7 +77,7 @@ class HomeDrawer extends StatelessWidget {
                         new UserAccountsDrawerHeader(
                           //Material内置控件
                           accountName: new Text(
-                            user.login ?? "---",
+                            user.name ?? "---",
                             style: GSYConstant.largeTextWhite,
                           ),
                           accountEmail: new Text(
@@ -120,8 +120,8 @@ class HomeDrawer extends StatelessWidget {
                                 CommonUtils.showLoadingDialog(context);
                                 IssueDao.createIssueDao(
                                     "CarGuo", "gsy_github_app_flutter", {
-                                  "title":
-                                      GSYLocalizations.i18n(context)!.home_reply,
+                                  "title": GSYLocalizations.i18n(context)!
+                                      .home_reply,
                                   "body": content
                                 }).then((result) {
                                   Navigator.pop(context);
@@ -191,7 +191,7 @@ class HomeDrawer extends StatelessWidget {
                                   .home_about,
                               style: GSYConstant.normalText,
                             ),
-                            onLongPress: (){
+                            onLongPress: () {
                               NavigatorUtils.goDebugDataPage(context);
                             },
                             onTap: () {

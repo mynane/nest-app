@@ -49,7 +49,13 @@ User _$UserFromJson(Map<String, dynamic> json) {
     json['disk_usage'] as int?,
     json['collaborators'] as int?,
     json['two_factor_authentication'] as bool?,
-  );
+    json['introduction'] as String?,
+    json['headurl'] as String?,
+    json['bigurl'] as String?,
+    json['create_at'] == null
+        ? null
+        : DateTime.parse(json['create_at'] as String),
+  )..username = json['username'] as String?;
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -90,4 +96,9 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'disk_usage': instance.disk_usage,
       'collaborators': instance.collaborators,
       'two_factor_authentication': instance.two_factor_authentication,
+      'introduction': instance.introduction,
+      'headurl': instance.headurl,
+      'bigurl': instance.bigurl,
+      'username': instance.username,
+      'create_at': instance.create_at?.toIso8601String(),
     };

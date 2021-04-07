@@ -3,14 +3,27 @@ import 'package:gsy_github_app_flutter/common/config/ignoreConfig.dart';
 
 ///地址数据
 class Address {
-  static const String host = "https://api.github.com/";
+  // static const String host = "https://api.github.com/";
   static const String hostWeb = "https://github.com/";
   static const String graphicHost = 'https://ghchart.rshah.org/';
   static const String updateUrl = 'https://www.pgyer.com/guqa';
 
+  static const String host = "http://106.12.99.114/api/";
+  // static const String host = "http://10.23.101.29:3000/api/";
+
   ///获取授权  post
   static getAuthorization() {
-    return "${host}authorizations";
+    return "${host}auth/login";
+  }
+
+  // 获取首页数据
+  static getHome() {
+    return "${host}aggregate/home";
+  }
+
+  // 获取今天推荐数据
+  static getRecommend() {
+    return "${host}recommends";
   }
 
   ///搜索 get

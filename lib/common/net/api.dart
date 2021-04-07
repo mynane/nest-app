@@ -57,7 +57,8 @@ class HttpManager {
       if (e.response != null) {
         errorResponse = e.response;
       } else {
-        errorResponse = new Response(statusCode: 666, request: RequestOptions(path: url));
+        errorResponse =
+            new Response(statusCode: 666, request: RequestOptions(path: url));
       }
       if (e.type == DioErrorType.connectTimeout ||
           e.type == DioErrorType.receiveTimeout) {
@@ -78,6 +79,14 @@ class HttpManager {
     if (response.data is DioError) {
       return resultError(response.data);
     }
+
+    if (response.data.code != 200 && response.data.code != 201) {
+      return new ResultData(
+          Code.errorHandleFunction(response.data.code, 'error', noTip),
+          false,
+          response.data.code);
+    }
+
     return response.data;
   }
 

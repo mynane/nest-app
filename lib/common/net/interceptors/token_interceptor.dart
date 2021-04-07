@@ -29,8 +29,11 @@ class TokenInterceptors extends InterceptorsWrapper {
   onResponse(Response response) async {
     try {
       var responseJson = response.data;
-      if (response.statusCode == 201 && responseJson["token"] != null) {
-        _token = 'token ' + responseJson["token"];
+      if ((response.statusCode == 201 || response.statusCode == 200) &&
+          responseJson["data"] != null &&
+          responseJson["data"]["access_token"] != null) {
+        _token = 'Bearer ' + responseJson["data"]["access_token"];
+
         await LocalStorage.save(Config.TOKEN_KEY, _token);
       }
     } catch (e) {
@@ -55,7 +58,7 @@ class TokenInterceptors extends InterceptorsWrapper {
         //提示输入账号密码
       } else {
         //通过 basic 去获取token，获取到设置，返回token
-        return "Basic $basic";
+        return "Bearer $basic";
       }
     } else {
       this._token = token;

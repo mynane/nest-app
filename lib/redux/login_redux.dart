@@ -1,6 +1,10 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:gsy_github_app_flutter/config/application.dart';
+import 'package:gsy_github_app_flutter/config/routes.dart';
 import 'package:gsy_github_app_flutter/db/sql_manager.dart';
 import 'package:gsy_github_app_flutter/common/dao/user_dao.dart';
+import 'package:gsy_github_app_flutter/page/login/login_page.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
@@ -15,13 +19,14 @@ import 'middleware/epic_store.dart';
  * Date: 2018-07-16
  */
 final LoginReducer = combineReducers<bool?>([
-  TypedReducer<bool?, LoginSuccessAction>(_loginResult) ,
+  TypedReducer<bool?, LoginSuccessAction>(_loginResult),
   TypedReducer<bool?, LogoutAction>(_logoutResult),
 ]);
 
 bool? _loginResult(bool? result, LoginSuccessAction action) {
   if (action.success == true) {
-    NavigatorUtils.goHome(action.context);
+    // NavigatorUtils.goHome(action.context);
+    Application.router.pop(action.context);
   }
   return action.success;
 }
@@ -65,7 +70,11 @@ class LoginMiddleware implements MiddlewareClass<GSYState> {
       UserDao.clearAll(store);
       CookieManager().clearCookies();
       SqlManager.close();
-      NavigatorUtils.goLogin(action.context);
+      // Application.router.navigateTo(
+      //   action.context,
+      //   LoginPage.sName,
+      //   transition: TransitionType.fadeIn,
+      // );
     }
     // Make sure to forward actions to the next middleware in the chain!
     next(action);
@@ -78,9 +87,12 @@ Stream<dynamic> loginEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
     CommonUtils.showLoadingDialog(action.context);
     var res = await UserDao.login(
         action.username!.trim(), action.password!.trim(), store);
+    // Application.router.navigateTo(action.context, Routes.root);
+    // Application.router.pop(action.context);
     Navigator.pop(action.context);
     yield LoginSuccessAction(action.context, (res != null && res.result));
   }
+
   return actions
       .whereType<LoginAction>()
       .switchMap((action) => _loginIn(action, store));
@@ -94,6 +106,7 @@ Stream<dynamic> oauthEpic(Stream<dynamic> actions, EpicStore<GSYState> store) {
     Navigator.pop(action.context);
     yield LoginSuccessAction(action.context, (res != null && res.result));
   }
+
   return actions
       .whereType<OAuthAction>()
       .switchMap((action) => _loginIn(action, store));

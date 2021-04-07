@@ -102,7 +102,7 @@ class DynamicPageState extends State<DynamicPage>
     WidgetsBinding.instance!.addObserver(this);
 
     ///获取网络端新版信息
-    ReposDao.getNewsVersion(context, false);
+    // ReposDao.getNewsVersion(context, false);
   }
 
   @override

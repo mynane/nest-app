@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 ///颜色
 class GSYColors {
   static const int primaryIntValue = 0xFF24292E;
+  // static const int primaryIntValue = 0x68CC3C;
 
   static const MaterialColor primarySwatch = const MaterialColor(
     primaryIntValue,

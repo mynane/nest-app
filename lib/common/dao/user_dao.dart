@@ -23,16 +23,14 @@ import 'package:gsy_github_app_flutter/common/utils/common_utils.dart';
 import 'package:redux/redux.dart';
 
 class UserDao {
-
   static oauth(code, store) async {
-
     httpManager.clearAuthorization();
 
     var res = await httpManager.netFetch(
         "https://github.com/login/oauth/access_token?"
-            "client_id=${NetConfig.CLIENT_ID}"
-            "&client_secret=${NetConfig.CLIENT_SECRET}"
-            "&code=${code}",
+        "client_id=${NetConfig.CLIENT_ID}"
+        "&client_secret=${NetConfig.CLIENT_SECRET}"
+        "&code=${code}",
         null,
         null,
         null);
@@ -44,14 +42,13 @@ class UserDao {
       var _token = 'token ' + token;
       await LocalStorage.save(Config.TOKEN_KEY, _token);
 
-
       resultData = await getUserInfo(null);
-      if (Config.DEBUG! ) {
+      if (Config.DEBUG!) {
         print("user result " + resultData.result.toString());
         print(resultData.data);
         print(res.data.toString());
       }
-      if(resultData.result == true) {
+      if (resultData.result == true) {
         store.dispatch(new UpdateUserAction(resultData.data));
       }
     }
@@ -59,28 +56,27 @@ class UserDao {
     return new DataResult(resultData, res!.result);
   }
 
-  static login(userName, password, store) async {
-    String type = userName + ":" + password;
-    var bytes = utf8.encode(type);
-    var base64Str = base64.encode(bytes);
+  static login(username, password, store) async {
+    // String type = userName + ":" + password;
+    // var bytes = utf8.encode(type);
+    // var base64Str = base64.encode(bytes);
     if (Config.DEBUG!) {
-      print("base64Str login " + base64Str);
+      print("base64Str login width username " +
+          username +
+          " password " +
+          password);
     }
 
-    await LocalStorage.save(Config.USER_NAME_KEY, userName);
-    await LocalStorage.save(Config.USER_BASIC_CODE, base64Str);
+    await LocalStorage.save(Config.USER_NAME_KEY, username);
+    // await LocalStorage.save(Config.USER_BASIC_CODE, base64Str);
 
-    Map requestParams = {
-      "scopes": ['user', 'repo', 'gist', 'notifications'],
-      "note": "admin_script",
-      "client_id": NetConfig.CLIENT_ID,
-      "client_secret": NetConfig.CLIENT_SECRET
-    };
+    Map requestParams = {"username": username, "password": password};
     httpManager.clearAuthorization();
 
     var res = await httpManager.netFetch(Address.getAuthorization(),
         json.encode(requestParams), null, new Options(method: "post"));
     dynamic resultData = null;
+
     if (res != null && res.result) {
       await LocalStorage.save(Config.PW_KEY, password);
       var resultData = await getUserInfo(null);
@@ -89,7 +85,8 @@ class UserDao {
         print(resultData.data);
         print(res.data.toString());
       }
-      store.dispatch(new UpdateUserAction(resultData.data));
+
+      store.dispatch(new UpdateUserAction(resultData!.data));
     }
     return new DataResult(resultData, res!.result);
   }
@@ -146,18 +143,22 @@ class UserDao {
       }
       if (res != null && res.result) {
         String? starred = "---";
-        if (res.data["type"] != "Organization") {
-          var countRes = await getUserStaredCountNet(res.data["login"]);
-          if (countRes.result) {
-            starred = countRes.data;
-          }
-        }
+        // if (res.data["type"] != "Organization") {
+        //   var countRes = await getUserStaredCountNet(res.data["login"]);
+        //   if (countRes.result) {
+        //     starred = countRes.data;
+        //   }
+        // }
+
+        // res.data["data"]["id"] = res.data["data"]["_id"];
         User user = User.fromJson(res.data);
+
         user.starred = starred;
         if (userName == null) {
           LocalStorage.save(Config.USER_INFO, json.encode(user.toJson()));
         } else {
           if (needDb) {
+            ;
             provider.insert(userName, json.encode(user.toJson()));
           }
         }
@@ -333,7 +334,7 @@ class UserDao {
    */
   static checkFollowDao(name) async {
     String url = Address.doFollow(name);
-    var res = await httpManager.netFetch(url, null, null, null, noTip: true) ;
+    var res = await httpManager.netFetch(url, null, null, null, noTip: true);
     return new DataResult(res!.data, res.result);
   }
 

@@ -5,43 +5,48 @@ part 'User.g.dart';
 @JsonSerializable()
 class User {
   User(
-      this.login,
-      this.id,
-      this.node_id,
-      this.avatar_url,
-      this.gravatar_id,
-      this.url,
-      this.html_url,
-      this.followers_url,
-      this.following_url,
-      this.gists_url,
-      this.starred_url,
-      this.subscriptions_url,
-      this.organizations_url,
-      this.repos_url,
-      this.events_url,
-      this.received_events_url,
-      this.type,
-      this.site_admin,
-      this.name,
-      this.company,
-      this.blog,
-      this.location,
-      this.email,
-      this.starred,
-      this.bio,
-      this.public_repos,
-      this.public_gists,
-      this.followers,
-      this.following,
-      this.created_at,
-      this.updated_at,
-      this.private_gists,
-      this.total_private_repos,
-      this.owned_private_repos,
-      this.disk_usage,
-      this.collaborators,
-      this.two_factor_authentication);
+    this.login,
+    this.id,
+    this.node_id,
+    this.avatar_url,
+    this.gravatar_id,
+    this.url,
+    this.html_url,
+    this.followers_url,
+    this.following_url,
+    this.gists_url,
+    this.starred_url,
+    this.subscriptions_url,
+    this.organizations_url,
+    this.repos_url,
+    this.events_url,
+    this.received_events_url,
+    this.type,
+    this.site_admin,
+    this.name,
+    this.company,
+    this.blog,
+    this.location,
+    this.email,
+    this.starred,
+    this.bio,
+    this.public_repos,
+    this.public_gists,
+    this.followers,
+    this.following,
+    this.created_at,
+    this.updated_at,
+    this.private_gists,
+    this.total_private_repos,
+    this.owned_private_repos,
+    this.disk_usage,
+    this.collaborators,
+    this.two_factor_authentication,
+    this.introduction,
+    this.headurl,
+    this.bigurl,
+    this.create_at,
+  );
 
   String? login;
   int? id;
@@ -80,14 +85,16 @@ class User {
   int? disk_usage;
   int? collaborators;
   bool? two_factor_authentication;
-
+  String? introduction;
+  String? headurl;
+  String? bigurl;
+  String? username;
+  DateTime? create_at;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
-
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
   // 命名构造函数
   User.empty();
-
 }
